@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Herói das Chamas</title>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .box {
+            border: 2px solid orange;
+            padding: 20px;
+            width: 400px;
+            background: #222;
+        }
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: orange;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkorange;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box" id="jogo"></div>
+
+<script>
+    const mapa = {
+        rua: {
+            nome: "Rua (Em frente à casa)",
+            texto: "🔥 Depressa! Você está na frente da casa em chamas. O que você faz? 🔥",
+            opcoes: [
+                { texto: "Entro pela porta", destino: "sala" },
+                { texto: "Entro pela janela", destino: "quarto_frente" }
+            ]
+        },
+        sala: {
+            nome: "Sala",
+            texto: "Você está na sala. O fogo está espalhado.",
+            opcoes: [
+                { texto: "Voltar para a rua", destino: "rua" },
+                { texto: "Ir para o quarto", destino: "quarto_frente" },
+                { texto: "Ir para o corredor", destino: "corredor" }
+            ]
+        },
+        quarto_frente: {
+            nome: "Quarto",
+            texto: "Você está no quarto da frente.",
+            opcoes: [
+                { texto: "Voltar para a janela (Rua)", destino: "rua" },
+                { texto: "Ir para a sala", destino: "sala" }
+            ]
+        },
+        corredor: {
+            nome: "Corredor",
+            texto: "Você está no corredor principal.",
+            opcoes: [
+                { texto: "Voltar para a sala", destino: "sala" },
+                { texto: "Entrar na cozinha", destino: "cozinha" },
+                { texto: "Entrar no quarto principal", destino: "quarto_alvo" }
+            ]
+        },
+        cozinha: {
+            nome: "Cozinha",
+            texto: "Você está na cozinha. Muito calor por aqui!",
+            opcoes: [
+                { texto: "Voltar para o corredor", destino: "corredor" },
+                { texto: "Ir para o banheiro", destino: "banheiro" }
+            ]
+        },
+        banheiro: {
+            nome: "Banheiro",
+            texto: "Você está no banheiro.",
+            opcoes: [
+                { texto: "Voltar para a cozinha", destino: "cozinha" },
+                { texto: "Ir para o quarto principal", destino: "quarto_alvo" }
+            ]
+        },
+        quarto_alvo: {
+            nome: "Quarto Principal",
+            texto: "👨‍🚒 Jogo concluído com sucesso! Você encontrou a pessoa que estava presa no quarto[cite: 1]!",
+            opcoes: [
+                { texto: "Jogar de novo", destino: "rua" }
+            ]
+        }
+    };
+
+    function irPara(local) {
+        let atual = mapa[local];
+        let html = `<h2>Herói das Chamas</h2>`;
+        html += `<p><strong>Local:</strong> ${atual.nome}</p>`;
+        html += `<p>${atual.texto}</p>`;
+        
+        atual.opcoes.forEach(op => {
+            html += `<button onclick="irPara('${op.destino}')">${op.texto}</button>`;
+        });
+        
+        document.getElementById("jogo").innerHTML = html;
+    }
+
+    irPara("rua");
+</script>
+
+</body>
+</html>
